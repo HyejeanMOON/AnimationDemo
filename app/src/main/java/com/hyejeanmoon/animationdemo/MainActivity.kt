@@ -21,24 +21,26 @@ class MainActivity : AppCompatActivity() {
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        val animator = ValueAnimator.ofInt(0, 5000)
+        val animator = ValueAnimator.ofFloat(0F, 5000F)
         animator.interpolator = LinearInterpolator()
-        animator.setDuration(5000)
+        animator.setDuration(2000)
 
         val objectAnimator = ObjectAnimator.ofFloat(binding.textView, "rotation", 0F, 360F)
         objectAnimator.setEvaluator(CustomTypeEvaluator())
-        objectAnimator.setDuration(5000)
+        objectAnimator.setDuration(2000)
 
 
         val colorObjectAnimator = ObjectAnimator.ofArgb(Color.BLACK, Color.WHITE, Color.BLACK)
         colorObjectAnimator.interpolator = AccelerateDecelerateInterpolator()
-        colorObjectAnimator.setDuration(5000)
+        colorObjectAnimator.setDuration(2000)
+        colorObjectAnimator.repeatMode = ObjectAnimator.REVERSE
         colorObjectAnimator.addUpdateListener {
             binding.textView.setTextColor(it.animatedValue as Int)
         }
 
         animator.addUpdateListener {
-            binding.textView.text = (it.animatedValue as Int / 100).toString()
+            binding.textView.text = ((it.animatedValue as Float).toInt() / 100).toString()
+            binding.bezierView.setValue(it.animatedValue as Float)
         }
 
         binding.start.setOnClickListener {
